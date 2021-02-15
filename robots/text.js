@@ -13,12 +13,18 @@ const nlu = new NaturalLanguageUnderstandingV1({
     serviceUrl: watsonUrl
 })
 
-async function robot(content) {
+const state = require('./state')
+
+async function robot() {
+    const content = state.load()
+    
     await fetchContentFromWikipedia(content)
     sanitializeContent(content)
     breakContentntoSentences(content)
     limitmaximumSentences(content)
     await fetchKeywordsOfAllSentences(content)
+
+    state.save(content)
 
     async function fetchContentFromWikipedia(content) {
         const algorithmiaAuthenticated = algorithmia.client(algorithmiaApiKey)
