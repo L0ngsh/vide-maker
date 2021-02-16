@@ -105,3 +105,4 @@ dist
 
 credentials/*.json
 content.json
+content/*.png
