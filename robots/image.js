@@ -1,7 +1,7 @@
 const { google } = require('googleapis');
 const imageDownloader = require('image-downloader');
 const state = require('./state');
-const googleCreds = require('../credentials/gogleSearch.json');
+const googleCreds = require('../credentials/googleSearch.json');
 
 const customSearch = google.customsearch('v1');
 
