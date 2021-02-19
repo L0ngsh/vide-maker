@@ -1,27 +1,44 @@
-const readline = require('readline-sync')
+const readline = require('readline-sync');
+const fs = require('fs');
+const path = require('path');
 
-const state = require('./state')
+const state = require('./state');
 
 function robot() {
     const content = {
         maximumSentences: 7
     }
     
-    content.searchTerm = askAndReturnSearchTerm()
-    content.prefix = askAndReturnPrefix()
+    content.searchTerm = askAndReturnSearchTerm();
+    content.prefix = askAndReturnPrefix();
+    content.videoData = selectVideoTemplate();
 
-    state.save(content)
+    state.save(content);
 
     function askAndReturnSearchTerm() {
-        return readline.question('Type of Wikipedia search term: ')
+        return readline.question('Type of Wikipedia search term: ');
     }
 
     function askAndReturnPrefix() {
-        const prefixes = ['Who is', 'What is', 'The history of']
-        const selectedPrefixIndex = readline.keyInSelect(prefixes, 'Chose option:')
-        const selectedPrefixText = prefixes[selectedPrefixIndex]
+        const prefixes = ['Who is', 'What is', 'The history of'];
+        const selectedPrefixIndex = readline.keyInSelect(prefixes, 'Chose option:');
+        const selectedPrefixText = prefixes[selectedPrefixIndex];
 
-        return selectedPrefixText
+        return selectedPrefixText;
+    }
+
+    function selectVideoTemplate() {
+        const templateList = fs.readdirSync(path.resolve(__dirname, '../template/scripts'));
+        const selectTemplate = readline.keyInSelect(templateList, 'Chose video template:');
+        const selectedTemplate = templateList[selectTemplate];
+    
+        const musicLink = fs.readFileSync(`./template/${selectTemplate + 1}/music.link`, 'utf-8');
+
+        const data = {
+            template: selectedTemplate,
+            musicLink
+        }
+        return data;
     }
 }
 
