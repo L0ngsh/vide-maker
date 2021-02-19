@@ -7,7 +7,7 @@
     ```xml
     <mlt LC_NUMERIC="C" producer="main_bin" version="6.25.0" root="PATH/template/1">
      <profile frame_rate_num="25" sample_aspect_num="1" display_aspect_den="9" colorspace="709" progressive="1" description="HD 1080p 25 fps" display_aspect_num="16" frame_rate_den="1" width="1920" height="1080" sample_aspect_den="1"/>
-     <consumer f="mp4" g="15" channels="2" crf="23" progressive="1" target="/home/l0ng/Projects/test/content/template1.mp4" threads="0" real_time="-3" mlt_service="avformat" vcodec="libx264" ab="192k" movflags="+faststart" bf="2" preset="faster" acodec="aac" in="0" out="1050"/>
+     <consumer f="mp4" g="15" channels="2" crf="23" progressive="1" target="PATH/content/video.mp4" threads="0" real_time="-3" mlt_service="avformat" vcodec="libx264" ab="192k" movflags="+faststart" bf="2" preset="faster" acodec="aac" in="0" out="1050"/>
      <producer id="producer6" in="00:00:00.000" out="00:00:06.960">
       <property name="length">175</property>
       <property name="eof">pause</property>
