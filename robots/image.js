@@ -10,9 +10,6 @@ async function robot() {
 
     await fetchImagesToAllSentences(content);
     await downloadAllImages(content);
-    await convertAllImages(content);
-    await createAllSentencesImages(content);
-    await createYouTubeThumbnail();
 
     state.save(content);
 

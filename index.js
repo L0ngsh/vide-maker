@@ -6,8 +6,7 @@ const robots = {
     video: require('./robots/video')
 }
 
-async function start() {    
-    
+async function start() {       
     robots.userInput();
     await robots.text();
     await robots.image();

@@ -1,5 +1,9 @@
 const gm = require('gm').subClass({imageMagick: true});
+const { spawn } = require('child_process');
 const state = require('./state');
+const path = require('path');
+
+const rootPath = path.resolve(__dirname, '..');
 
 async function robot() {
     const content = state.load();
@@ -7,6 +11,7 @@ async function robot() {
     await convertAllImages(content);
     await createAllSentencesImages(content);
     await createYouTubeThumbnail();
+    await renderVideo(content);
 
     state.save(content);
 
@@ -126,6 +131,26 @@ async function robot() {
                     console.log(`> [video-robot] Creating Youtube thumbnail`);
                     resolve();
                 });
+        });
+    }
+
+    async function renderVideo(content) {
+        return new Promise((resolve, reject) => {
+            const templateFilePath = `${rootPath}/template/scripts/${content.videoData.template}`;
+            
+            console.log('> Starting melt');
+
+            const meltRender = spawn('melt', ['', templateFilePath]);
+
+
+            meltRender.stdout.on('data', (data) => {
+                process.stdout.write(data);
+            });
+        
+            meltRender.on('close', () => {
+                console.log('> Melt closed');
+                resolve();
+            });
         });
     }
 
