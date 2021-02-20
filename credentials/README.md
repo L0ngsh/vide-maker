@@ -35,3 +35,9 @@ File: `googleSearch.json`
     "searchEngineId": "google engine serach ID"
 }
 ```
+
+## Google Search
+
+File: `OAuth2.json`
+
+Download YouTube's ouath2 api creds file from Google API 
