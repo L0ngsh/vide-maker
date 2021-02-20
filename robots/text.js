@@ -16,6 +16,7 @@ const nlu = new NaturalLanguageUnderstandingV1({
 const state = require('./state')
 
 async function robot() {
+    console.log('> [Text Robot] Starting...');
     const content = state.load()
     
     await fetchContentFromWikipedia(content)
@@ -25,8 +26,10 @@ async function robot() {
     await fetchKeywordsOfAllSentences(content)
 
     state.save(content)
+    console.log('> [Text Robot] Closed.');
 
     async function fetchContentFromWikipedia(content) {
+        console.log(`> [Text Robot] Fetching content for ${content.searchTerm} from wikipedia`);
         const algorithmiaAuthenticated = algorithmia.client(algorithmiaApiKey)
         const wikipediaAlgorithm = algorithmiaAuthenticated.algo('web/WikipediaParser/0.1.2')
         const strSanitized = content.searchTerm.replace(/\s+/g, '')
@@ -34,6 +37,7 @@ async function robot() {
         const wikipediaContent = wikipediaResponse.get()
     
         content.sourceContentOriginal = wikipediaContent.content
+        console.log(`> [Text Robot] Fetching done!`);
     }
 
     function sanitializeContent(content) {
@@ -79,9 +83,15 @@ async function robot() {
     }
 
     async function fetchKeywordsOfAllSentences(content) {
+        console.log(`> [Text Robot] Starting to fetch keywords from Watson-nlu`);
         for (const sentence of content.sentences) {
+            console.log(`> [Text Robot] sentence: "${sentence.text}"`);
+        
             sentence.keywords = await fetchWatsonAndReturnKeywords(sentence.text)
+        
+            console.log(`> [Text Robot] keywords: ${sentence.keywords.join(', ')}\n`);
         }
+        console.log(`> [Text Robot] Fetching done!`);
     }
 
     async function fetchWatsonAndReturnKeywords(sentence) {

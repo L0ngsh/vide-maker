@@ -6,6 +6,7 @@ const path = require('path');
 const rootPath = path.resolve(__dirname, '..');
 
 async function robot() {
+    console.log(`> [Video Robot] Starting...`);
     const content = state.load();
 
     await convertAllImages(content);
@@ -14,6 +15,7 @@ async function robot() {
     await renderVideo(content);
 
     state.save(content);
+    console.log(`> [Video Robot] Closed.`);
 
     async function convertAllImages(content) {
         for (let sentenceIndex = 0; sentenceIndex < content.sentences.length; sentenceIndex++) {
@@ -52,7 +54,7 @@ async function robot() {
                         return reject(error);
                     }
                 
-                    console.log(`> [video-robot] Image converted: ${inputFile}`);
+                    console.log(`> [Video Robot] Image converted: ${inputFile}`);
                     resolve();
                 });
         });
@@ -113,7 +115,7 @@ async function robot() {
                         return reject(error)
                     }
             
-                    console.log(`> [video-robot] Sentence created: ${outputFile}`);
+                    console.log(`> [Video Robot] Sentence created: ${outputFile}`);
                     resolve();
                 })
         });
@@ -128,7 +130,7 @@ async function robot() {
                         return reject(error);
                     }
 
-                    console.log(`> [video-robot] Creating Youtube thumbnail`);
+                    console.log(`> [Video Robot] YouTube thumbnail created!`);
                     resolve();
                 });
         });
@@ -138,7 +140,7 @@ async function robot() {
         return new Promise((resolve, reject) => {
             const templateFilePath = `${rootPath}/template/scripts/${content.videoData.template}`;
             
-            console.log('> Starting melt');
+            console.log('> [Video Robot] Starting render with melt...');
 
             const meltRender = spawn('melt', ['', templateFilePath]);
 
@@ -148,7 +150,7 @@ async function robot() {
             });
         
             meltRender.on('close', () => {
-                console.log('> Melt closed');
+                console.log('> [Video Robot] Render finished.');
                 resolve();
             });
         });

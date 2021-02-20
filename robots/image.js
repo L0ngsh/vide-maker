@@ -6,21 +6,24 @@ const googleCreds = require('../credentials/googleSearch.json');
 const customSearch = google.customsearch('v1');
 
 async function robot() {
+    console.log(`> [Image Robot] Starting...`);
     const content = state.load();
 
     await fetchImagesToAllSentences(content);
     await downloadAllImages(content);
 
     state.save(content);
+    console.log(`> [Image Robot] Closed.`);
 
     async function fetchImagesToAllSentences(content) {
-        for (const sentence of content.sentences) {
-            const query = `${content.searchTerm} ${sentence.keywords[0]}`;
+        for (let sentence = 0; sentence < content.sentences.length; sentence++) {
+            const query = `${content.searchTerm}${(sentence > 0)?' '+content.sentences[sentence].keywords[0]:''}`;
 
+            console.log(`> [Image Robot] Querying Google Images with: "${query}"`);
             const response = await fetchImagesFromQuery(query);
         
-            sentence.images = response;
-            sentence.querySearch = query;
+            content.sentences[sentence].images = response;
+            content.sentences[sentence].querySearch = query;
         }
     }
 
@@ -56,10 +59,10 @@ async function robot() {
 
                     await downloadAndSave(imageUrl, `${sentenceIndex}-original.png`);
                     content.downloadedImages.push(imageUrl);
-                    console.log(`> [${sentenceIndex}][${imageIndex}] Baixou imagem com sucesso: ${imageUrl}`);
+                    console.log(`> [Image Robot] [${sentenceIndex}][${imageIndex}] Image Successfully downlaoded: ${imageUrl}`);
                     break;
                 } catch(error) {
-                    console.log(`> [${sentenceIndex}][${imageIndex}] Falha ao baixar (${imageUrl}): ${error}`);
+                    console.log(`> [Image Robot] [${sentenceIndex}][${imageIndex}] Error (${imageUrl}): ${error}`);
                 }
             }
         }
