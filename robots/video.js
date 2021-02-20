@@ -108,7 +108,7 @@ async function robot() {
                 .out('-background', 'transparent')
                 .out('-fill', 'white')
                 .out('-kerning', '1')
-                .out('-pointsize', '60')
+                .out('-pointsize', '50')
                 .out(`caption:${text}`)
                 .write(outputFile, (error) => {
                     if (error) {
